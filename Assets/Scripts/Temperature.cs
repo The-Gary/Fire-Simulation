@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Temperature : MonoBehaviour
 {
-    [SerializeField] float temp = 0f;
+    [SerializeField] public float temp = 0f;
     SpriteRenderer spriteRenderer;
     float red = 0f;
     float green = 0f;
