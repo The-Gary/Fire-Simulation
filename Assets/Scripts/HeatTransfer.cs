@@ -12,7 +12,11 @@ public class HeatTransfer : MonoBehaviour
         Temperature temp = gameObject.GetComponent<Temperature>();
         if (isTouching && temp.temp != targetTemp.temp && temp.temp < 99)
         {
-            temp.temp += 0.1f;
+            temp.temp += 0.6f;
+        }
+        else if (!isTouching && temp.temp >= 0)
+        {
+            temp.temp -= 1f;
         }
     }
 

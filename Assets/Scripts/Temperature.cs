@@ -6,6 +6,7 @@ public class Temperature : MonoBehaviour
 {
     [SerializeField] public float temp = 0f;
     SpriteRenderer spriteRenderer;
+
     float red = 0f;
     float green = 0f;
     float blue = 0f;
@@ -31,6 +32,12 @@ public class Temperature : MonoBehaviour
             green = temp / 100f;
             blue = temp / 100f;
         }
+
+        // change scale proportionally to temperature if gameObject tag is not Heat Source
+        // if (gameObject.tag != "Heat Source")
+        // {
+        //     transform.localScale = new Vector3(temp / 200f, temp / 200f, 1f);
+        // }
 
         spriteRenderer.color = new Color(red, green, blue);
     }
