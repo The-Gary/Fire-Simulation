@@ -4,41 +4,28 @@ using UnityEngine;
 
 public class Temperature : MonoBehaviour
 {
-    [SerializeField] public float temp = 0f;
-    SpriteRenderer spriteRenderer;
+    [SerializeField]
+    public float temp = 0f;
 
-    float red = 0f;
-    float green = 0f;
-    float blue = 0f;
+    SpriteRenderer spriteRenderer = null;
+
     // Start is called before the first frame update
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.color = new Color(red, green, blue);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (temp <= 50)
+        spriteRenderer.color = new Color((temp * 10) / 255, 0, 0, temp / 100);
+        if (gameObject.tag == "Particle")
         {
-            red = temp / 50f;
-            green = 0f;
-            blue = 0f;
+            transform.localScale = new Vector3(
+                Mathf.Lerp(0.5f, 1.25f, temp / 100),
+                Mathf.Lerp(0.5f, 1.25f, temp / 100),
+                Mathf.Lerp(0.5f, 1.25f, temp / 100)
+            );
         }
-        else if (temp > 50 && temp <= 100)
-        {
-            red = 1f;
-            green = temp / 100f;
-            blue = temp / 100f;
-        }
-
-        // change scale proportionally to temperature if gameObject tag is not Heat Source
-        // if (gameObject.tag != "Heat Source")
-        // {
-        //     transform.localScale = new Vector3(temp / 200f, temp / 200f, 1f);
-        // }
-
-        spriteRenderer.color = new Color(red, green, blue);
     }
 }

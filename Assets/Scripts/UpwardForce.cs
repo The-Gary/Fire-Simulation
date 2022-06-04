@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class UpwardForce : MonoBehaviour
 {
+    [SerializeField]
+    float force = 0.5f;
     Rigidbody2D rigidBody;
     Temperature temp;
 
@@ -17,11 +19,9 @@ public class UpwardForce : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // add upward force to the rigidbody proportionate to the temperature
         if (temp.temp > 0)
         {
-            rigidBody.AddForce(Vector2.up * temp.temp * 0.01f);
+            rigidBody.AddForce(Vector2.up * temp.temp * force);
         }
-
     }
 }

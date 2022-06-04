@@ -1,19 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
     public GameObject prefab;
-    int count = 0;
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField]
+    int count = 400;
+
+    void Start()
     {
-        if (count < 2000)
+        for (int i = 0; i < count; i++)
         {
-            Instantiate(prefab, transform.position, transform.rotation);
-            count++;
+            GameObject.Instantiate(
+                prefab,
+                new Vector2(Random.Range(-10, 10), Random.Range(-10, 10)),
+                Quaternion.identity
+            );
         }
     }
 }

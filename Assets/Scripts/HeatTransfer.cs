@@ -4,40 +4,70 @@ using UnityEngine;
 
 public class HeatTransfer : MonoBehaviour
 {
-    [SerializeField] bool isTouching = false;
+    [SerializeField]
+    bool isTouching = false;
+
+    [SerializeField]
+    bool heated = false;
+
+    [SerializeField]
+    float transferRate = 1f;
+
+    Temperature temp = null;
     Temperature targetTemp = null;
+
+    void Start()
+    {
+        temp = gameObject.GetComponent<Temperature>();
+    }
 
     void Update()
     {
-        Temperature temp = gameObject.GetComponent<Temperature>();
-        if (isTouching && temp.temp != targetTemp.temp && temp.temp < 99)
+        if (heated && temp.temp < 100)
         {
-            temp.temp += 0.6f;
+            temp.temp += transferRate * Time.deltaTime;
         }
-        else if (!isTouching && temp.temp >= 0)
+        else if (targetTemp.temp > temp.temp && isTouching && temp.temp < 100)
         {
-            temp.temp -= 1f;
+            float difference = targetTemp.temp - temp.temp;
+            temp.temp += difference * transferRate * Time.deltaTime;
+        }
+        else if (targetTemp.temp < temp.temp && isTouching && temp.temp > 1)
+        {
+            float difference = temp.temp - targetTemp.temp;
+            temp.temp -= difference * transferRate * Time.deltaTime;
+        }
+
+        if (!isTouching && temp.temp > 1)
+        {
+            temp.temp -= transferRate * Time.deltaTime;
         }
     }
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        isTouching = true;
-        targetTemp = other.gameObject.GetComponent<Temperature>();
-        // if (other.gameObject.tag == "Heat Source")
-        // {
-        //     Temperature temp = gameObject.GetComponent<Temperature>();
-        //     Temperature otherTemp = other.gameObject.GetComponent<Temperature>();
-        //     Debug.Log(temp.temp);
-        //     if (otherTemp.temp > temp.temp)
-        //     {
-        //         temp.temp++;
-        //     }
-        // }
+        if (other.gameObject.tag == "Particle")
+        {
+            isTouching = true;
+            targetTemp = other.gameObject.GetComponent<Temperature>();
+        }
     }
 
     void OnCollisionExit2D(Collision2D other)
     {
-        isTouching = false;
+        if (other.gameObject.tag == "Particle")
+            isTouching = false;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Heat Source")
+            heated = true;
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Heat Source")
+            heated = false;
     }
 }
